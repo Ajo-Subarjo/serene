@@ -3,7 +3,7 @@ import { fetchWeatherApi  } from "openmeteo";
 const parallax = document.querySelector('.parallax');
 const grass_1 = document.querySelector('#grass1');
 const grass_2 = document.querySelector('#grass2');
-const cloud = document.querySelector('#cloud');
+
 const ornament = document.querySelector('#ornament')
 
 const searchForm = document.querySelector("#search-form");
@@ -17,34 +17,27 @@ const temperature = document.querySelector("#temperature");
 const condition = document.querySelector("#condition");
 const humidity = document.querySelector("#humidity");
 const rain = document.querySelector("#rain");
-const forecast = document.querySelector("#weather-forecast");
 
-const latitude = -6.9277;
-const longitude = 106.9317;
+const weatherForecast = document.querySelector("#weather-forecast");
 
 
-let params = {
-    latitude: -6.9277,
-    longitude: 106.9317,
+const locationSettings = document.querySelector("#location-settings");
+const latitudeInput = document.querySelector("#latitude-input");
+const longitudeInput = document.querySelector("#longitude-input");
+const locationSave = document.querySelector("#location-save");
+const locationCancel =document.querySelector("#location-cancel");
 
-    daily: ["weather_code"],
 
-    hourly: [
-        "temperature_2m",
-        "relative_humidity_2m"
-    ],
+let latitude = -6.9277;
+let longitude = 106.9317;
 
-    current: [
-        "temperature_2m",
-        "relative_humidity_2m",
-        "rain",
-        "precipitation",
-        "weather_code"
-    ],
+const savedLatitude = localStorage.getItem("latitude");
+const savedLongitude = localStorage.getItem("longitude");
 
-    timezone: "auto",
-};
-
+if (savedLatitude !== null && savedLongitude !== null) {
+    latitude = Number(savedLatitude);
+    longitude = Number(savedLongitude);
+}
 
 
 const sGrass1 = 40;
@@ -86,43 +79,66 @@ searchForm.addEventListener("submit", (e) => {
     window.location.href = url;
 });
 
+document.addEventListener("keydown", (event) => {
 
-function getWeatherInfo(code) {
+    if (
+        event.altKey &&
+        event.key.toLowerCase() === "c"
+    ) {
 
-    const weather = {
-        0: ["☀️", "Clear"],
-        1: ["🌤️", "Mainly clear"],
-        2: ["⛅", "Partly cloudy"],
-        3: ["☁️", "Overcast"],
+        event.preventDefault();
 
-        45: ["🌫️", "Fog"],
-        48: ["🌫️", "Rime fog"],
+        latitudeInput.value =
+            latitude;
 
-        51: ["🌦️", "Light drizzle"],
-        53: ["🌦️", "Drizzle"],
-        55: ["🌧️", "Heavy drizzle"],
+        longitudeInput.value =
+            longitude;
 
-        61: ["🌦️", "Light rain"],
-        63: ["🌧️", "Rain"],
-        65: ["🌧️", "Heavy rain"],
+        locationSettings.style.display =
+            "flex";
+    }
+});
 
-        71: ["🌨️", "Light snow"],
-        73: ["❄️", "Snow"],
-        75: ["❄️", "Heavy snow"],
+locationSave.addEventListener("click", () => {
 
-        80: ["🌦️", "Rain showers"],
-        81: ["🌧️", "Rain showers"],
-        82: ["⛈️", "Heavy showers"],
+    const newLatitude = Number(latitudeInput.value);
 
-        95: ["⛈️", "Thunderstorm"],
-        96: ["⛈️", "Thunderstorm"],
-        99: ["⛈️", "Thunderstorm"]
-    };
+    const newLongitude = Number(longitudeInput.value)
 
-    const [icon, name] = weather[code] ?? ["❓", "Unknown"];
 
-    return { icon, name };
-}
+    if (!Number.isFinite(newLatitude) || !Number.isFinite(newLongitude)) {
+        alert("Invalid latitude or longitude");
+        return;
+    }
+
+
+    if (newLatitude < -90 ||newLatitude > 90) {
+        alert("Latitude must be between -90 and 90")
+        return;
+    }
+
+    if (newLongitude < -180 ||newLongitude > 180) {
+        alert("Longitude must be between -180 and 180");
+        return;
+    }
+
+    latitude = newLatitude;
+
+    longitude = newLongitude;
+
+
+    localStorage.setItem("latitude", latitude);
+
+    localStorage.setItem("longitude", longitude);
+
+    locationSettings.style.display = "none";
+    getWeather();
+});
+
+
+locationCancel.addEventListener("click", () => {
+    locationSettings.style.display = "none";
+});
 
 
 function updateParallax() {
@@ -165,80 +181,166 @@ function updateDateTime() {
 }
 
 
-function updateCurrentWeather(current) {
-  const temperatureValue = current.variables(0).value();
-  const humidityValue = current.variables(1).value();
-  const precipitationValue = current.variables(2).value();
-  const weatherCode = current.variables(3).value();
 
-  const weather = getWeatherInfo(weatherCode);
+function getWeatherInfo(code, isDay = true) {
 
-  weatherIcon.textContent = weather.icon;
-
-  temperature.textContent =
-      `${Math.round(temperatureValue)}°C`;
-
-  condition.textContent =
-      weather.name;
-
-  humidity.textContent =
-      `💧${Math.round(humidityValue)}%`;
-
-  rain.textContent =
-      `🌧️${precipitationValue.toFixed(1)}mm`;
+    if (code === 0) {
+        return { icon: isDay ? "☀️" : "🌙", text: "Clear" };
+    } else if (code === 1) {
+        return { icon: isDay ? "🌤️" : "🌙", text: "Mainly clear" };
+    } else if (code === 2) {
+        return { icon: "⛅", text: "Partly cloudy" };
+    } else if (code === 3) {
+        return { icon: "☁️", text: "Cloudy" };
+    } else if (code === 45 || code === 48) {
+        return { icon: "🌫️", text: "Fog" };
+    } else if (code === 51 || code === 53 || code === 55) {
+        return { icon: "🌦️", text: "Drizzle" };
+    } else if (code === 56 || code === 57) {
+        return { icon: "🌧️", text: "Freezing drizzle" };
+    } else if (code === 61 || code === 63 || code === 65) {
+        return { icon: "🌧️", text: "Rain" };
+    } else if (code === 66 || code === 67) {
+        return { icon: "🌧️", text: "Freezing rain" };
+    } else if (code === 71 || code === 73 || code === 75 || code === 77) {
+        return { icon: "🌨️", text: "Snow" };
+    } else if (code === 80 || code === 81 || code === 82) {
+        return { icon: "🌦️", text: "Rain showers" };
+    } else if (code === 85 || code === 86) {
+        return { icon: "🌨️", text: "Snow showers" };
+    } else if (code === 95 || code === 96 || code === 99) {
+        return { icon: "⛈️", text: "Thunderstorm" };
+    } else {
+        return { icon: "❓", text: "Unknown" };
+    }
 }
 
-
-function updateForecastDaily(daily) {
-
-  forecast.innerHTML = ""
-
-  const times = daily.time();
-  const weatherCodes = daily.variables(0).valuesArray();
-  const maxTemps = daily.variables(1).valuesArray();
-  const minTemps = daily.variables(2).valuesArray();
-  const rainProbability = daily.variables(3).valuesArray();
-
-  for (let i = 0; i < times.lenght; i++) {
-    const date = new Date(Number(times[i]) * 1000)
-
-    const day = date.toLocaleDateString("en-US", { weekday: 'short' })
-
-    const weather = getWeatherInfo(weatherCodes[i]);
-
-    card.className = "forecast-day"
-
-    card.innerHTML = `
-      <p>${day}</p>
-      <p>${weather.icon}</p>
-      <p>${Math.round(maxTemps[i])}°</p>
-      <p>${Math.round(minTemps[i])}°</p>
-      <p>🌧️${Math.round(rainProbability[i])}%</p>
-      `;
-    forecast.appendChild(card)
-
-  }
-}
 
 async function getWeather() {
-  try {
-    const responses = await fetchWeatherApi("https://api.open-meteo.com/v1/forecast",params)
-    const res = responses[0]
 
-    const current = res.current();
-    const daily = res.daily()
+    try {
 
-    updateCurrentWeather(current);
+        console.log(`Getting weather for ${latitude}, ${longitude}`);
 
-  } catch (error) {
-    console.error("failded to get Weather", error)
-  }
+        const params = {
+            latitude: [latitude],
+            longitude: [longitude],
+
+            current: "temperature_2m,relative_humidity_2m,rain,weather_code,is_day",
+            daily: "weather_code,temperature_2m_max,temperature_2m_min,rain_sum",
+
+            timezone: "auto",
+            forecast_days: 7
+        };
+
+
+        const url = "https://api.open-meteo.com/v1/forecast"
+
+
+        const responses = await fetchWeatherApi(url, params);
+
+
+        const response = responses[0];
+        const current =response.current();
+
+
+        const currentTemperature = current.variables(0).value();
+        const currentHumidity = current.variables(1).value();
+        const currentRain = current.variables(2).value();
+        const currentWeatherCode = current.variables(3).value()
+        const isDay = current.variables(4).value() === 1;
+
+
+        const currentWeather = getWeatherInfo(currentWeatherCode, isDay);
+
+
+        weatherIcon.textContent = currentWeather.icon;
+        temperature.textContent = `${Math.round(currentTemperature)}°C`;
+        condition.textContent = currentWeather.text;
+        humidity.textContent = `💧${Math.round(currentHumidity)}%`;
+        rain.textContent = `🌧️${currentRain.toFixed(1)} mm`;
+
+
+        const daily = response.daily()
+        const weatherCodes = daily.variables(0).valuesArray();
+        const maxTemperatures = daily.variables(1).valuesArray();
+
+        const minTemperatures = daily.variables(2).valuesArray();
+        const rainSums = daily.variables(3).valuesArray();
+
+        weatherForecast.innerHTML = "";
+        const days = [
+            "Today",
+            "Tomorrow",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat",
+            "Sun"
+        ];
+
+
+        const dateFormatter = new Intl.DateTimeFormat("en-EN", {weekday: "short"});
+
+
+        const startDate = new Date();
+
+
+        for (let i = 0; i < 7; i++) {
+
+            const code =weatherCodes[i];
+            const max = maxTemperatures[i];
+            const min = minTemperatures[i];
+            const rainAmount =rainSums[i]
+
+
+            const weather = getWeatherInfo(code, true);
+            let dayName;
+
+
+            if (i === 0) {
+                dayName = "Today";
+
+            } else {
+
+                const date =new Date(startDate);
+                date.setDate(date.getDate() + i);
+                dayName = dateFormatter.format(date);
+            }
+
+
+            const forecastDay = document.createElement("div");
+            forecastDay.className ="forecast-day";
+
+
+            forecastDay.innerHTML = `
+                <p>${dayName}</p>
+                <p>${weather.icon}</p>
+                <p>${weather.text}</p>
+                <p>
+                    ${Math.round(min)}°
+                    /
+                    ${Math.round(max)}°
+                </p>
+            `;
+
+
+            weatherForecast.appendChild(forecastDay);
+        }
+
+
+        console.log("Weather updated");
+
+    } catch (error) {
+        console.error("Failed to get weather:", error);
+        condition.textContent = "Weather unavailable";
+    }
 }
 
-
-
-
+getWeather();
 
 updateDateTime();
-getWeather()
 setInterval(updateDateTime, 1000);
+
+// Update weather every 10 minutes i guest
+setInterval(getWeather,10 * 60 * 1000);

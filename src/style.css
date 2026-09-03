@@ -183,7 +183,8 @@ body {
 
 .current-weather {
     position: absolute;
-    left:80%;
+    left:83%;
+    bottom: 55%;
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: auto auto auto;
@@ -195,7 +196,7 @@ body {
     font-family: Chewy;
     font-weight: 550;
     color: aquamarine;
-    font-size: clamp(3rem, 2.7vw, 8rem);
+    font-size: clamp(1rem, 2.5vw, 2.5rem);
 }
 
 .current-weather p {
@@ -228,7 +229,7 @@ body {
     font-size: 70%;
 }
 
-.weather-forecast {
+#weather-forecast {
     display: flex;
     justify-content: space-between;
     gap: 10px;
@@ -237,32 +238,69 @@ body {
     font-weight: 450;
     color: lemonchiffon;
     font-variation-settings:"wdth" 90;
-    font-size: clamp(2.2rem, 2.3vw, 8rem);
+    font-size: clamp(1rem, 2vw, 3rem);
 }
 
 
 .forecast-day {
     flex: 1;
     text-align: center;
-    padding: 15px;
+    padding: 2px;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.25);
 }
 
 .forecast-day p {
-    margin: 5px ;
+    margin: 2px ;
+}
+
+#location-settings {
+    position: fixed;
+    font-family: Fredoka;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    color: sandybrown;
+    flex-direction: column;
+    gap: 10px;
+    width: min(80vw, 350px);
+    padding: 25px;
+    background: #f7e7cb;
+    border-radius: 15px;
+    z-index: 100;
+}
+
+#location-settings input {
+    box-sizing: border-box;
+    color: saddlebrown;
+    width: 100%;
+    height: 40px;
+    padding: 5px 10px;
+    font-size: 1rem;
+    font-weight: 550 ;
+    border: none;
+    border-radius: 8px;
+}
+
+#location-settings button {
+    height: 40px;
+    background-color: tan;
+    font-family: fredoka;
+    font-size: 1.5rem ;
+    color: saddlebrown;
+    font-weight: 550;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 
 
-
-
 @keyframes moveCloud {
-    from {
-        transform: translate(40px);
+    from { transform: translate(40px);
     }
-    to {
-        transform: translate(-40px);
+    to { transform: translate(-40px);
     }
 }
 
@@ -283,18 +321,19 @@ body {
 
     }
 
-    .weather-forecast {
+    #weather-forecast {
         /*margin-right: 50px;*/
         width: 100vw;
         overflow-x: auto;
         display: flex;
         gap: 10px;
-        font-size: clamp(1.5rem, 2.5vw, 3rem);
+        font-size: clamp(1rem, 2.5vw, 3rem);
     }
 
     .forecast-day {
+        padding: 5px;
         flex: 0 0 100px;
-        margin-top: 4vh;
+        margin-top: 3vh;
     }
 
     .container {
