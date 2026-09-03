@@ -59,9 +59,9 @@ body {
 }
 
 #cloud {
-    bottom: 28%;
+    bottom: 30%;
     scale: 1.15 1.2;
-    max-height: 45%;
+    max-height: 50%;
     left: 2%;
     z-index: -4;
     animation: moveCloud 10s ease-in-out infinite alternate;
@@ -82,7 +82,7 @@ body {
 
 #clock {
     text-align: center ;
-    color: ;
+    color: #d5a16c ;
     font-family: Chewy ;
     font-size: clamp(6rem, 10vw, 20rem);
     top: 50%;
@@ -174,51 +174,87 @@ body {
 .weather-container {
     position: absolute;
     z-index: 10;
-    width: 25vw;
-    height: 25vh;
-    top: 75vh;
-    left: 75vw;
+    width: 90vw;
+    height: 40vh;
+    top: 80vh;
     /*scale: 5;*/
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .current-weather {
-    font-family: fredoka;
+    position: absolute;
+    left:80%;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto auto;
+    column-gap: 15px;
+    row-gap: 0;
+
+    align-items: center;
+
+    font-family: Chewy;
     font-weight: 550;
     color: aquamarine;
-    font-size: clamp(2.5rem, 2.7vw, 8rem);
+    font-size: clamp(3rem, 2.7vw, 8rem);
 }
 
+.current-weather p {
+    margin: 0;
+}
 #weather-icon {
-    position: absolute;
-    bottom: 15%;
-    left: 25%;
-    font-size: 150%;
+    grid-column: 1;
+    grid-row: 1 / 3;
+    font-size: 180%;
 }
 #temperature {
-    position: absolute;
-    bottom: 25%;
-    left: 5%;
+    grid-column: 2;
+    grid-row: 1;
     font-size: 65%;
 }
 #condition {
-    position: absolute;
-    top: 30%;
-    left: 5%;
+    grid-column: 2;
+    grid-row: 2;
     font-size: 140%;
 }
 #humidity {
-    position: absolute;
-    bottom: 40%;
-    left: 60%;
+    grid-column: 1;
+    grid-row: 3;
     font-size: 70%;
 }
+
 #rain {
-    position: absolute;
-    bottom: 5%;
-    left: 60%;
+    grid-column: 2;
+    grid-row: 3;
     font-size: 70%;
 }
+
+.weather-forecast {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-family: fredoka;
+    margin-top: 20vh;
+    font-weight: 450;
+    color: lemonchiffon;
+    font-variation-settings:"wdth" 90;
+    font-size: clamp(2.2rem, 2.3vw, 8rem);
+}
+
+
+.forecast-day {
+    flex: 1;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.forecast-day p {
+    margin: 5px ;
+}
+
+
+
 
 
 @keyframes moveCloud {
@@ -231,6 +267,36 @@ body {
 }
 
 @media (max-width: 768px) and (orientation: portrait) {
+
+
+
+    .weather-container {
+        width: 100vw;
+        /*right: 10%;*/
+    }
+
+
+    .current-weather {
+        top: 20%;
+        left: 73vw;
+        font-size: clamp(1rem, 3.5vw, 3.5rem);
+
+    }
+
+    .weather-forecast {
+        /*margin-right: 50px;*/
+        width: 100vw;
+        overflow-x: auto;
+        display: flex;
+        gap: 10px;
+        font-size: clamp(1.5rem, 2.5vw, 3rem);
+    }
+
+    .forecast-day {
+        flex: 0 0 100px;
+        margin-top: 4vh;
+    }
+
     .container {
         bottom: auto;
         top: 2%;
