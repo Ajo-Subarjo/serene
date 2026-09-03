@@ -5,7 +5,7 @@ it combines a minimal search interface with real-time information such as the cu
 
 why i create this website because its help me learn with css parallax effect.
 
-you can try the website here
+you can try the website here: 
 https://ajo-subarjo.github.io/serene/
 
 
