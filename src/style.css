@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wdth,wght@75..125,300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chewy&family=DynaPuff:wght@400..700&family=Fredoka:wdth,wght@75..125,300..700&display=swap');
+
+body {
+    background: linear-gradient( #4dcfd8,#c3fff7, #c3fff7);
+    /*background-color: #f5efe6;*/
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    min-width: 100vw;
+    margin: 0;
+}
+
+.container {
+    position: absolute;
+    display: flex;
+    bottom: 50% ;
+    flex-direction: column;
+    width: min(85%, 800px);
+}
+
+
+.parallax {
+    position: relative;
+    z-index: -1;
+    min-height: 120vh;
+    min-width: 100vw;
+    overflow: hidden;
+}
+
+#grass1, #grass2, #ornament, #cloud{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+}
+
+#grass1 {
+    scale: .9 .9;
+    top: 40%;
+    max-height: 50%;
+    right: 22%;
+    z-index: -1;
+}
+
+#ornament {
+    /*position: fixed;*/
+    z-index: -3;
+    scale: 0.8;
+}
+
+#grass2 {
+    scale: .9 ;
+    top: 50%;
+    max-height: 40%;
+    left: 25%;
+    z-index: -2;
+}
+
+#cloud {
+    bottom: 28%;
+    scale: 1.15 1.2;
+    max-height: 45%;
+    left: 2%;
+    z-index: -4;
+    animation: moveCloud 10s ease-in-out infinite alternate;
+}
+
+#bottombar {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    max-height: 60%;
+    /*min-height: 0%;*/
+    top:55%;
+    scale: 1.15;
+    z-index: 0;
+}
+
+
+
+#clock {
+    text-align: center ;
+    color: ;
+    font-family: Chewy ;
+    font-size: clamp(6rem, 10vw, 20rem);
+    top: 50%;
+    margin-bottom: -5%;
+
+}
+#calender {
+    text-align: center ;
+    color: #b39977;
+    font-family: Chewy ;
+    font-weight: 500;
+    font-variation-settings:"wdth" 80;
+    font-size: clamp(1rem, 5vw, 3rem);
+    margin: 20px;
+
+}
+
+
+#search-form {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    /*margin-top: 20%;*/
+}
+
+#search-btn::before{
+    font-family: 'fredoka';
+    font-weight: 550;
+    font-variation-settings:"wdth" 75;
+    font-size: 1.5rem;
+    content: "SEARCH 🔍︎";
+}
+
+#search-btn:hover{
+    scale: 1.05;
+}
+
+#search-btn {
+    flex-shrink: 0;
+    width: min(85%, 120px);
+    height: 45px;
+
+    padding-top: 3px;
+
+    background-color: #e9904b;
+    color: #8e5117;
+
+    outline: 5px solid;
+    outline-color: #ca8139;
+    outline-offset: -2px;
+    border-radius: 10px;
+
+    margin-left: 20px;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+#search-input {
+    flex-shrink: 1;
+    padding: 5px 10px;
+    width: min(85%, 700px);
+    height: 40px;
+
+    /*border: 5px solid ;*/
+
+    background-color: #f7e7cb;
+    color: #d5a16c;
+
+    font-family: 'fredoka';
+    font-size: 1.5rem;
+
+    outline: 5px solid;
+    outline-offset: -2px;
+    border-radius: 10px;
+
+    transition: all 0.3s ease;
+
+}
+
+
+#search-input:focus {
+  /*border-color: #fe8019;*/
+  border-color: #f7e7cb;
+  scale: 1.03;
+}
+
+.weather-container {
+    position: absolute;
+    z-index: 10;
+    width: 25vw;
+    height: 25vh;
+    top: 75vh;
+    left: 75vw;
+    /*scale: 5;*/
+    overflow: hidden;
+}
+
+.current-weather {
+    font-family: fredoka;
+    font-weight: 550;
+    color: aquamarine;
+    font-size: clamp(2.5rem, 2.7vw, 8rem);
+}
+
+#weather-icon {
+    position: absolute;
+    bottom: 15%;
+    left: 25%;
+    font-size: 150%;
+}
+#temperature {
+    position: absolute;
+    bottom: 25%;
+    left: 5%;
+    font-size: 65%;
+}
+#condition {
+    position: absolute;
+    top: 30%;
+    left: 5%;
+    font-size: 140%;
+}
+#humidity {
+    position: absolute;
+    bottom: 40%;
+    left: 60%;
+    font-size: 70%;
+}
+#rain {
+    position: absolute;
+    bottom: 5%;
+    left: 60%;
+    font-size: 70%;
+}
+
+
+@keyframes moveCloud {
+    from {
+        transform: translate(40px);
+    }
+    to {
+        transform: translate(-40px);
+    }
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+    .container {
+        bottom: auto;
+        top: 2%;
+        left: 8%;
+    };
+
+    #bottombar {
+        position: absolute;
+        max-height: 36%;
+        top:66%;
+    };
+
+    #ornament {
+        max-height: 60%;
+        top: 20%;
+    };
+
+    #grass1 {
+        top: 45%;
+        max-height: 42%;
+
+    }
+}
