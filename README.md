@@ -1,10 +1,12 @@
-# 🌿 Serene
+#🌿 Serene
 
 Serene is simple and cozy personal homepage designed to provide a calm starting point for browsing the web.
 it combines a minimal search interface with real-time information such as the current time, date, weather, and a 7-day forecast, all wrapped in a playful parallax environment.
 
 why i create this website because its help me learn with css parallax effect.
 
+you can try the website here
+https://ajo-subarjo.github.io/serene/
 
 
 
