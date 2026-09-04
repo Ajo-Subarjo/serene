@@ -30,7 +30,7 @@ const sens_grass2Y = 0.6;
 const sens_ornamentY = 1.2;
 
 
-// just incase no offense. this emoticon is needed to render the weather icon, no ai we harmed :]
+// just incase no offense. this emoticon is needed to render the weather icon, no ai were harmed :]
 const weather_code = {
   0: ["☀️", "Clear", "🌙"],
   1: ["🌤️", "Mainly clear", "🌙"],
