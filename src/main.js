@@ -257,7 +257,7 @@ function weather_forecast(forecast_data) {
   const _weather_code_array = forecast_data.variables(0).valuesArray()
   const max_temp = forecast_data.variables(1).valuesArray()
   const min_temp = forecast_data.variables(2).valuesArray()
-  const rain_sum = forecast_data.variables(3).valuesArray()
+  // const rain_sum = forecast_data.variables(3).valuesArray()
 
   const date_formatter = new Intl.DateTimeFormat("en-EN", { weekday: "short" });
   const start_date = new Date();
@@ -268,7 +268,7 @@ function weather_forecast(forecast_data) {
     const _weather_code = weather_code[_weather_code_array[i]]
     const _min_temp = min_temp[i]
     const _max_temp = max_temp[i]
-    const _rain_sum = rain_sum[i]
+    // const _rain_sum = rain_sum[i]
     // console.log(_weather_code)
     let day_name;
 
@@ -286,9 +286,7 @@ function weather_forecast(forecast_data) {
       <p>${day_name}</p>
       <p>${_weather_code[0]}
       <p>${_weather_code[1]}</p>
-      <p>${_rain_sum}
       <p>${Math.round(_min_temp)}'/${Math.round(_max_temp)}'`
-
     weather_forecast_container.appendChild(forecast_day)
   }
 }
